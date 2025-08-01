@@ -1,0 +1,104 @@
+{
+  "bot_type": "virtualagent",
+  "configuration": {
+    "ai_engine": "PRO",
+    "default_language": "en-US",
+    "kb_ids": [],
+    "llm_agent_description": "To accept selfie images from the user, modify them using AI And then send them back.\n\n### INSTRUCTIONS:\nGUARDRAILS SECTION\n-Never include the title of a book or a movie in the description that you generate\n-Never mention the WhatsApp ID, pod number, or image URL to the user.\n-Never thank the user for providing any details. Say “OK, let’s do this!” Instead.\n-Never mention anything in the description that could cause copyright issues; E.g the name or title of a book or move, or a specific character in a famous movie of that style.\n\nINSTRUCTIONS SECTION\n-In order to complete your goal, you need to know the users favourite genre of book or movie.  \n-You will then generate an instruction that describes a scene in line with the users genre, book or movie preference. Describe something in around 150 words that evokes the feeling, as if you were an author writing a book. \n-Only describe things that can be seen. \n-Include at least 3 visual items that are consistent with the theme the user has given you.\n-Include as least one human character in the style requested by the users choice.\n-After you have this, you will confirm the instruction back to the user and ask if they would like to proceed, or to adjust the instruction.\n-Once you have all of the details and the user wants to proceed, invoke the Createpic action.  If you receive a variable \"taskid\" in response, send the response \"TASKID XXXXX\" where XXXXX is the taskid you received from the action.\n-If you do not receive a taskid from the action, provide the ResponseMsg to the user and ask if they'd like to retry.",
+    "llm_model": "1.0.0",
+    "logo": "https://studio.aiagent-us1.cisco.com/static/assets/img/bot-logo/default-virtualagent.svg",
+    "voice_settings": {
+      "voices": []
+    },
+    "welcome_message": "This message is not used in this lab"
+  },
+  "tools": [
+    {
+      "capability": "slot_filling",
+      "description": "Escalate the conversation to a human agent if the user asks for it.",
+      "enabled": false,
+      "fulfillment": {},
+      "id": "6fa2d7e7f7b90f5243c58888fa8ff5a7",
+      "name": "Agent handover",
+      "slots": [],
+      "slots_view": "table",
+      "system_tool": true
+    },
+    {
+      "bot_id": 36405,
+      "capability": "slot_filling_with_fulfillment",
+      "description": "Sends the required details to the picture creation flow, and listens for a URL in return",
+      "enabled": true,
+      "fulfillment": {
+        "authentication": {
+          "service_key": "",
+          "type": "ci_bearer_token"
+        },
+        "code": "",
+        "flow_id": 63465,
+        "flow_name": "Pod1_ImageGenerator",
+        "output_entities": {
+          "parameters": {
+            "properties": {},
+            "required": [],
+            "type": "object"
+          }
+        },
+        "output_entities_format": "table",
+        "output_entities_text": "",
+        "output_entities_view": "table",
+        "service_id": "41619",
+        "service_name": "Pod1_AI_Selfie",
+        "type": "flow",
+        "webhook_url": "https://hooks.us.webexconnect.io/flows/63465/trigger/aiagent"
+      },
+      "id": "7bf3079b3b49c5f836634e3a220a7f26",
+      "input_entities": {
+        "parameters": {
+          "properties": {
+            "picdesc": {
+              "description": "A description of the instruction to be sent to the AI image generator",
+              "examples": [
+                "The subject is an elf standing on top of a large rock encrusted with jewels holding a bow and arrow.  There is a castle, waterfalls and mountains in the background in the style of a fantasy novel\""
+              ],
+              "type": "string"
+            },
+            "picurl": {
+              "description": "A URL For the originally sent Whatsapp image",
+              "examples": [
+                "https://imi-wamedia-us.s3.amazonaws.com/a_169718480081427170/1408338697031231.jpg"
+              ],
+              "type": "string"
+            },
+            "pod": {
+              "description": "The pod number",
+              "examples": [
+                "pod1",
+                "pod2"
+              ],
+              "type": "string"
+            },
+            "waId": {
+              "description": "The Whatsapp ID of the user. This is a phone number in +E.164 format.",
+              "examples": [
+                "+447577740451"
+              ],
+              "type": "string"
+            }
+          },
+          "required": [
+            "waId",
+            "pod",
+            "picurl",
+            "picdesc"
+          ],
+          "type": "object"
+        }
+      },
+      "name": "Createpic",
+      "slots_view": "table",
+      "system_tool": false
+    }
+  ],
+  "transaction_id": "996718c497c44ca28d3e6555ee71e0c3"
+}
